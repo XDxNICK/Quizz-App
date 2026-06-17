@@ -150,8 +150,27 @@ function handleOptionClick(event) {
 // SHOW RESULTS
 
 
-
 // START / RESTART
+// Resets all state variables back to their initial values, then loads the first question and switches to the quiz screen.
+
+function startQuiz() {
+  currentIndex = 0;
+  score        = 0;
+  answered     = false;
+
+  loadQuestion();
+  showScreen(quizScreen);
+}
+
+function handleNext() {
+  currentIndex++;
+
+  if (currentIndex >= QUESTIONS.length) {
+    showResults();
+  } else {
+    loadQuestion();
+  }
+}
 
 
 
