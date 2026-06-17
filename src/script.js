@@ -1,0 +1,166 @@
+// QUESTION BANK
+// Each object has: question (string), options (array of 4 strings),
+// answer (0-based index of the correct option).
+const QUESTIONS = [
+  {
+    question: 'What is the powerhouse of the cell?',
+    options: ['Nucleus', 'Ribosome', 'Mitochondria', 'Golgi apparatus'],
+    answer: 2,
+  },
+  {
+    question: 'Which planet is known as the Red Planet?',
+    options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
+    answer: 1,
+  },
+  {
+    question: 'How many sides does a hexagon have?',
+    options: ['5', '6', '7', '8'],
+    answer: 1,
+  },
+  {
+    question: 'Which element has the chemical symbol "O"?',
+    options: ['Gold', 'Osmium', 'Oxygen', 'Oganesson'],
+    answer: 2,
+  },
+  {
+    question: 'Who wrote "Romeo and Juliet"?',
+    options: ['Charles Dickens', 'Jane Austen', 'William Shakespeare', 'Mark Twain'],
+    answer: 2,
+  },
+  {
+    question: 'What is the largest ocean on Earth?',
+    options: ['Atlantic', 'Indian', 'Arctic', 'Pacific'],
+    answer: 3,
+  },
+  {
+    question: 'In which year did the first Moon landing occur?',
+    options: ['1965', '1967', '1969', '1971'],
+    answer: 2,
+  },
+  {
+    question: 'What is the smallest prime number?',
+    options: ['0', '1', '2', '3'],
+    answer: 2,
+  },
+  {
+    question: 'Which country is home to the kangaroo?',
+    options: ['South Africa', 'Brazil', 'New Zealand', 'Australia'],
+    answer: 3,
+  },
+  {
+    question: 'How many bones are in the adult human body?',
+    options: ['196', '206', '216', '226'],
+    answer: 1,
+  },
+];
+
+// DOM REFERENCES
+// Grabbed once at startup; never queried inside loops.
+const startScreen   = document.getElementById('start-screen');
+const quizScreen    = document.getElementById('quiz-screen');
+const resultsScreen = document.getElementById('results-screen');
+
+const startBtn      = document.getElementById('start-btn');
+const nextBtn       = document.getElementById('next-btn');
+const restartBtn    = document.getElementById('restart-btn');
+
+const questionCounter = document.getElementById('question-counter');
+const scoreDisplay    = document.getElementById('score-display');
+const progressFill    = document.getElementById('progress-fill');
+const questionText    = document.getElementById('question-text');
+const optionsGrid     = document.getElementById('options-grid');
+
+const feedback      = document.getElementById('feedback');
+const feedbackIcon  = document.getElementById('feedback-icon');
+const feedbackText  = document.getElementById('feedback-text');
+
+const resultsIcon    = document.getElementById('results-icon');
+const resultsSummary = document.getElementById('results-summary');
+const resultsScore   = document.getElementById('results-score');
+const resultsMessage = document.getElementById('results-message');
+
+// STATE
+
+
+// LOAD QUESTION
+
+
+// HANDLE OPTION CLICK
+// Called when the user clicks any answer button.
+// `this` is the clicked <button>; we also use `event.currentTarget` for clarity.
+function handleOptionClick(event) {
+  // Guard: ignore clicks if the user already answered this question.
+  if (answered) return;
+  answered = true;
+
+  const clickedBtn    = event.currentTarget;
+  const chosenIndex   = Number(clickedBtn.dataset.index);
+  const correctIndex  = QUESTIONS[currentIndex].answer;
+  const isCorrect     = chosenIndex === correctIndex;
+
+  if (isCorrect) score++;
+
+  // ── Visual feedback on the buttons ──
+  // Collect all option buttons rendered in the grid.
+  const allBtns = optionsGrid.querySelectorAll('.option-btn');
+
+  allBtns.forEach(btn => {
+    const idx = Number(btn.dataset.index);
+
+    // Disable every button so only one answer is possible per question.
+    btn.disabled = true;
+
+    if (idx === correctIndex) {
+      // Always highlight the correct answer in green.
+      btn.classList.add('option-btn--correct');
+    } else if (idx === chosenIndex) {
+      // If the user picked a wrong answer, highlight it in red.
+      btn.classList.add('option-btn--wrong');
+    } else {
+      // Dim every other option that wasn't chosen and isn't correct.
+      btn.classList.add('option-btn--dimmed');
+    }
+  });
+
+  // ── Feedback banner ──
+  if (isCorrect) {
+    feedback.classList.add('feedback--correct');
+    feedbackIcon.textContent = '✓';
+    feedbackText.textContent = 'Correct! Well done.';
+  } else {
+    feedback.classList.add('feedback--wrong');
+    feedbackIcon.textContent = '✗';
+    feedbackText.textContent =
+      `Incorrect. The answer is: "${QUESTIONS[currentIndex].options[correctIndex]}"`;
+  }
+  feedback.classList.remove('feedback--hidden');
+
+  // ── Update the score display immediately ──
+  scoreDisplay.textContent = `Score: ${score}`;
+
+  // ── Enable the Next button ──
+  nextBtn.disabled = false;
+
+  // Change label on the very last question so users know the quiz is ending.
+  nextBtn.textContent =
+    currentIndex === QUESTIONS.length - 1 ? 'See Results' : 'Next Question';
+}
+
+
+// SHOW RESULTS
+
+
+
+// START / RESTART
+
+
+
+startBtn.addEventListener('click', startQuiz);
+nextBtn.addEventListener('click', handleNext);
+restartBtn.addEventListener('click', () => {
+  // Go back to the start screen rather than jumping straight into the quiz,
+  // so the user sees the intro card again.
+  showScreen(startScreen);
+});
+
+showScreen(startScreen);
