@@ -109,12 +109,11 @@ function loadQuestion() {
   feedback.classList.remove('feedback--correct', 'feedback--wrong');
 
   // ── Header: "Question X of Y" + live score ──
-  questionCounter.textContent = ⁠ Question ${currentIndex + 1} of ${total} ⁠;
+ questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
   scoreDisplay.textContent    = ⁠ Score: ${score} ⁠;
 
   // ── Progress bar, Width is expressed as a percentage of questions completed so far.
-  
-  progressFill.style.width = ⁠ ${((currentIndex + 1) / total) * 100}% ⁠;
+  progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
   questionText.textContent = q.question;
 
   // ── Build option buttons ──
@@ -246,7 +245,7 @@ function showResults() {
   const percent = (score / total) * 100;
 
   resultsScore.textContent   = score;
-  resultsSummary.textContent = ⁠ You answered ${score} out of ${total} correctly. ⁠;
+  resultsSummary.textContent = `You answered ${score} out of ${total} correctly.`;
 
   // Emoji + message tier based on percentage.
   if (percent === 100) {
