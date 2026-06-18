@@ -109,8 +109,8 @@ function loadQuestion() {
   feedback.classList.remove('feedback--correct', 'feedback--wrong');
 
 
- questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
- scoreDisplay.textContent = `Score: ${score}`;
+ questionCounter.textCounter = `Question ${currentIndex+1}of ${total}`;
+  score.Display.textContent = `Score: ${score}`;
 
   // ── Progress bar, Width is expressed as a percentage of questions completed so far.
   progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
