@@ -80,7 +80,18 @@ const resultsScore   = document.getElementById('results-score');
 const resultsMessage = document.getElementById('results-message');
 
 // STATE
+// All mutable quiz state lives here. 
+let currentIndex = 0;   // which question we're on (0-based)
+let score        = 0;   // number of correct answers so far
+let answered     = false; // has the user picked an option for this question?
 
+function showScreen(screenEl) {
+  // Hide all three screens, then reveal only the requested one.
+  [startScreen, quizScreen, resultsScreen].forEach(s =>
+    s.classList.add('screen--hidden')
+  );
+  screenEl.classList.remove('screen--hidden');
+}
 
 // LOAD QUESTION
 // Reads the question at ⁠ currentIndex ⁠ from QUESTIONS and updates every
