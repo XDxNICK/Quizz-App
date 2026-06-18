@@ -108,7 +108,7 @@ function loadQuestion() {
   feedback.classList.add('feedback--hidden');
   feedback.classList.remove('feedback--correct', 'feedback--wrong');
 
-  // ── Header: "Question X of Y" + live score ──
+
  questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
  scoreDisplay.textContent = `Score: ${score}`;
 
