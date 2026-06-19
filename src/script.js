@@ -137,48 +137,6 @@ scoreDisplay.textContent = `Score: ${score}`;
   });
 }
 
-// LOAD QUESTION
-// Reads the question at `currentIndex` from QUESTIONS and updates every
-// relevant DOM node.  Also resets per-question UI state (feedback, Next btn).
-function loadQuestion() {
-  const total = QUESTIONS.length;
-  const q     = QUESTIONS[currentIndex];
-
-  // ── Reset per-question state ──
-  answered = false;
-  nextBtn.disabled = true;
-
-  // Hide the feedback banner from the previous question.
-  feedback.classList.add('feedback--hidden');
-  feedback.classList.remove('feedback--correct', 'feedback--wrong');
-
-
- questionCounter.textCounter = `Question ${currentIndex+1}of ${total}`;
-  score.Display.textContent = `Score: ${score}`;
-
-  // ── Progress bar, Width is expressed as a percentage of questions completed so far.
-  progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
-  questionText.textContent = q.question;
-
-  // ── Build option buttons ──
-  // Clear whatever buttons were there from the previous question.
-  optionsGrid.innerHTML = '';
-
-  const LABELS = ['A', 'B', 'C', 'D'];
-
-  q.options.forEach((optionText, index) => {
-    const btn = document.createElement('button');
-    btn.className      = 'option-btn';
-    btn.textContent    = optionText;
-    btn.dataset.label  = LABELS[index]; // drives the ::before pseudo-element
-    btn.dataset.index  = index;          // used in handleOptionClick to check correctness
-
-    // Each button fires the same handler; the handler reads btn.dataset.index.
-    btn.addEventListener('click', handleOptionClick);
-
-    optionsGrid.appendChild(btn);
-  });
-}
 
 
 // HANDLE OPTION CLICK
