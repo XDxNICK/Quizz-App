@@ -110,8 +110,8 @@ function loadQuestion() {
   feedback.classList.remove('feedback--correct', 'feedback--wrong');
 
   // ── Header: "Question X of Y" + live score ──
- questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
- scoreDisplay.textContent = `Score: ${score}`;
+questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
+scoreDisplay.textContent = `Score: ${score}`;
 
   // ── Progress bar, Width is expressed as a percentage of questions completed so far.
   progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
@@ -241,40 +241,6 @@ function handleOptionClick(event) {
   nextBtn.textContent =
     currentIndex === QUESTIONS.length - 1 ? 'See Results' : 'Next Question';
 }
-
-
-// SHOW RESULTS
-// SHOW RESULTS
-// Called after the user clicks Next on the final question.
-// Calculates the performance tier and populates the results screen.
-function showResults() {
-  const total   = QUESTIONS.length;
-  const percent = (score / total) * 100;
-
-  resultsScore.textContent   = score;
-  resultsSummary.textContent = `You answered ${score} out of ${total} correctly.`;
-
-  // Emoji + message tier based on percentage.
-  if (percent === 100) {
-    resultsIcon.textContent    = '🏆';
-    resultsMessage.textContent = 'Perfect score! Incredible!';
-  } else if (percent >= 80) {
-    resultsIcon.textContent    = '🎉';
-    resultsMessage.textContent = 'Great job! You really know your stuff.';
-  } else if (percent >= 60) {
-    resultsIcon.textContent    = '👍';
-    resultsMessage.textContent = 'Good effort! A bit more study and you\'ll ace it.';
-  } else if (percent >= 40) {
-    resultsIcon.textContent    = '📚';
-    resultsMessage.textContent = 'Keep learning! You\'re getting there.';
-  } else {
-    resultsIcon.textContent    = '💪';
-    resultsMessage.textContent = 'Don\'t give up! Every attempt makes you better.';
-  }
-
-  showScreen(resultsScreen);
-}
-
 
 
 // START / RESTART
