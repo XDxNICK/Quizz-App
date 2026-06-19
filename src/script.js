@@ -80,6 +80,7 @@ const resultsScore   = document.getElementById('results-score');
 const resultsMessage = document.getElementById('results-message');
 
 // STATE
+// STATE
 // All mutable quiz state lives here. 
 let currentIndex = 0;   // which question we're on (0-based)
 let score        = 0;   // number of correct answers so far
@@ -91,6 +92,49 @@ function showScreen(screenEl) {
     s.classList.add('screen--hidden')
   );
   screenEl.classList.remove('screen--hidden');
+}
+
+// LOAD QUESTION
+// Reads the question at ⁠ currentIndex ⁠ from QUESTIONS and updates every
+// relevant DOM node.  Also resets per-question UI state (feedback, Next btn).
+function loadQuestion() {
+  const total = QUESTIONS.length;
+  const q     = QUESTIONS[currentIndex];
+
+  // ── Reset per-question state ──
+  answered = false;
+  nextBtn.disabled = true;
+
+  // Hide the feedback banner from the previous question.
+  feedback.classList.add('feedback--hidden');
+  feedback.classList.remove('feedback--correct', 'feedback--wrong');
+
+  // ── Header: "Question X of Y" + live score ──
+ questionCounter.textContent = `Question ${currentIndex + 1} of ${total}`;
+ scoreDisplay.textContent = `Score: ${score}`;
+
+  // ── Progress bar, Width is expressed as a percentage of questions completed so far.
+  progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
+  questionText.textContent = q.question;
+
+  // ── Build option buttons ──
+  // Clear whatever buttons were there from the previous question.
+  optionsGrid.innerHTML = '';
+
+  const LABELS = ['A', 'B', 'C', 'D'];
+
+  q.options.forEach((optionText, index) => {
+    const btn = document.createElement('button');
+    btn.className      = 'option-btn';
+    btn.textContent    = optionText;
+    btn.dataset.label  = LABELS[index]; // drives the ::before pseudo-element
+    btn.dataset.index  = index;          // used in handleOptionClick to check correctness
+
+    // Each button fires the same handler; the handler reads btn.dataset.index.
+    btn.addEventListener('click', handleOptionClick);
+
+    optionsGrid.appendChild(btn);
+  });
 }
 
 // LOAD QUESTION
@@ -200,8 +244,40 @@ function handleOptionClick(event) {
 
 
 // SHOW RESULTS
+// SHOW RESULTS
+// Called after the user clicks Next on the final question.
+// Calculates the performance tier and populates the results screen.
+function showResults() {
+  const total   = QUESTIONS.length;
+  const percent = (score / total) * 100;
+
+  resultsScore.textContent   = score;
+  resultsSummary.textContent = `You answered ${score} out of ${total} correctly.`;
+
+  // Emoji + message tier based on percentage.
+  if (percent === 100) {
+    resultsIcon.textContent    = '🏆';
+    resultsMessage.textContent = 'Perfect score! Incredible!';
+  } else if (percent >= 80) {
+    resultsIcon.textContent    = '🎉';
+    resultsMessage.textContent = 'Great job! You really know your stuff.';
+  } else if (percent >= 60) {
+    resultsIcon.textContent    = '👍';
+    resultsMessage.textContent = 'Good effort! A bit more study and you\'ll ace it.';
+  } else if (percent >= 40) {
+    resultsIcon.textContent    = '📚';
+    resultsMessage.textContent = 'Keep learning! You\'re getting there.';
+  } else {
+    resultsIcon.textContent    = '💪';
+    resultsMessage.textContent = 'Don\'t give up! Every attempt makes you better.';
+  }
+
+  showScreen(resultsScreen);
+}
 
 
+
+// START / RESTART
 // START / RESTART
 // Resets all state variables back to their initial values, then loads the first question and switches to the quiz screen.
 
