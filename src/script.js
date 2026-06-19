@@ -95,7 +95,7 @@ function showScreen(screenEl) {
 }
 
 // LOAD QUESTION
-// Reads the question at ⁠ currentIndex ⁠ from QUESTIONS and updates every
+// Reads the question at `currentIndex` from QUESTIONS and updates every
 // relevant DOM node.  Also resets per-question UI state (feedback, Next btn).
 function loadQuestion() {
   const total = QUESTIONS.length;
@@ -138,7 +138,7 @@ scoreDisplay.textContent = `Score: ${score}`;
 }
 
 // LOAD QUESTION
-// Reads the question at ⁠ currentIndex ⁠ from QUESTIONS and updates every
+// Reads the question at `currentIndex` from QUESTIONS and updates every
 // relevant DOM node.  Also resets per-question UI state (feedback, Next btn).
 function loadQuestion() {
   const total = QUESTIONS.length;
